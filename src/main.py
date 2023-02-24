@@ -2,10 +2,9 @@ import cv2
 import os
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
 constant_value = 0.5
-
-skip_multiple_faces = True
 
 resize_image = False
 
@@ -17,11 +16,6 @@ def cropface(image):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
-    if(len(faces) != 1 and skip_multiple_faces):
-        print(f"More than one face found, skipping... {image}")
-        return
-    
-    print(f"Found {len(faces)} face(s) in {image}...")
     for idex, (x, y, w, h) in enumerate(faces):
         hp_1 = x
         hp_2 = (width - (x+w))
@@ -47,8 +41,15 @@ def cropface(image):
         if(padding %2 != 0):
             padding = padding - 1
 
+        
+
         faces = img[(y - padding):(y + h + padding), (x - padding):(x + w + padding)]
-        output = f"../output/{image.split('/')[-1].split('.')[0]}_{idex}.jpg"
+        gray = gray[(y - padding):(y + h + padding), (x - padding):(x + w + padding)]
+        gray_faces = eye_cascade.detectMultiScale(gray)
+        if(not len(gray_faces)):
+            print(f"There is no eye on this face OMG, skipping {image}")
+            return
+        output = f"../output/{idex}_{image.split('/')[-1]}"
         if(resize_image):
             cv2.imwrite(output, cv2.resize(faces, (resize_dimension, resize_dimension)))
         else:
