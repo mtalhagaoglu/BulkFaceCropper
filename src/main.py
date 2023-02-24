@@ -48,12 +48,12 @@ def cropface(image):
         gray_faces = eye_cascade.detectMultiScale(gray)
         if(not len(gray_faces)):
             print(f"There is no eye on this face OMG, skipping {image}")
-            return
-        output = f"../output/{idex}_{image.split('/')[-1]}"
-        if(resize_image):
-            cv2.imwrite(output, cv2.resize(faces, (resize_dimension, resize_dimension)))
         else:
-            cv2.imwrite(output, faces)
+            output = f"../output/{idex}_{image.split('/')[-1]}"
+            if(resize_image):
+                cv2.imwrite(output, cv2.resize(faces, (resize_dimension, resize_dimension)))
+            else:
+                cv2.imwrite(output, faces)
 
 if __name__ == "__main__":
     dir_path = "../input"
