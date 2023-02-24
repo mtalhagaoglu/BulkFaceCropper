@@ -7,6 +7,10 @@ constant_value = 0.5
 
 skip_multiple_faces = True
 
+resize_image = False
+
+resize_dimension = 512
+
 def cropface(image):
     img = cv2.imread(image)
     height, width, channels = img.shape 
@@ -45,7 +49,10 @@ def cropface(image):
 
         faces = img[(y - padding):(y + h + padding), (x - padding):(x + w + padding)]
         output = f"../output/{image.split('/')[-1].split('.')[0]}_{idex}.jpg"
-        cv2.imwrite(output, faces)
+        if(resize_image):
+            cv2.imwrite(output, cv2.resize(faces, (resize_dimension, resize_dimension)))
+        else:
+            cv2.imwrite(output, faces)
 
 if __name__ == "__main__":
     dir_path = "../input"
