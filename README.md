@@ -12,7 +12,7 @@ OpenCV Python library
 Clone the repository to your local machine:
 
 ```
-git clone https://github.com/<your-username>/bulk-face-cropper.git
+git clone https://github.com/mtalhagaoglu/bulk-face-cropper.git
 ```
 
 ### Install the required dependencies:
